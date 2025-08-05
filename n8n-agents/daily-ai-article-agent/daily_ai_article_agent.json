@@ -1,0 +1,301 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "markdownToHtml",
+        "markdown": "={{ $json.output }}",
+        "options": {
+          "backslashEscapesHTMLTags": true,
+          "emoji": true
+        }
+      },
+      "id": "195d4a3b-81c9-465f-b16b-b464b64a5387",
+      "name": "Convert to Email Format1",
+      "type": "n8n-nodes-base.markdown",
+      "position": [
+        4336,
+        576
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "subject": "=Your Daily AI news piece!",
+        "message": "={{ $json.data }}",
+        "options": {}
+      },
+      "id": "82ac1148-6475-4d13-ae84-367cc0900235",
+      "name": "Send Email1",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        4464,
+        576
+      ],
+      "typeVersion": 2.1,
+      "webhookId": "bad24681-1bc1-4c74-b813-337fa6817688",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "mxStTsuJkcN7M4GG",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "id": "c7d787fd-ac88-44a6-9016-47312edec85f",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        3232,
+        576
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "model": "sonar-reasoning",
+        "messages": {
+          "message": [
+            {
+              "content": "You are an expert AI researcher and content strategist. Find the single most interesting, recent, and impactful AI-related development from the past 7 days — preferably from credible sources or trending news outlets. Focus on topics that:\n- Are surprising or novel\n- Have real-world business implications\n- Can be understood by beginners without technical background and also professionals\n- Are likely to trend on social media (LinkedIn, X)\n\nReturn a detailed summary of the article, key implications, and why it matters. Cite the original source."
+            }
+          ]
+        },
+        "options": {
+          "searchRecency": "week"
+        },
+        "requestOptions": {}
+      },
+      "id": "11a4905b-54ee-49c5-8ef6-4bb9413c2314",
+      "name": "Perplexity - Blog Topic Research Node",
+      "type": "n8n-nodes-base.perplexity",
+      "position": [
+        3504,
+        576
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "perplexityApi": {
+          "id": "aFGMwsp9xphXDZmN",
+          "name": "Perplexity account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-3-7-sonnet-20250219",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 3.7"
+        },
+        "options": {}
+      },
+      "id": "4cf2582a-dcfa-4527-9c43-6db43b9057a2",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "position": [
+        3856,
+        752
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "anthropicApi": {
+          "id": "NB9ShdM1L6dJpmqX",
+          "name": "Anthropic account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "sonar-pro",
+        "messages": {
+          "message": [
+            {
+              "content": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('message0_Text', ``, 'string') }}"
+            }
+          ]
+        },
+        "simplify": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify_Output', ``, 'boolean') }}",
+        "options": {},
+        "requestOptions": {}
+      },
+      "id": "9a793146-2405-4013-97ef-0ed0286d4ba5",
+      "name": "Perplexity Search Tool",
+      "type": "n8n-nodes-base.perplexityTool",
+      "position": [
+        4096,
+        736
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "perplexityApi": {
+          "id": "aFGMwsp9xphXDZmN",
+          "name": "Perplexity account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.choices[0].message.content }}",
+        "options": {
+          "systemMessage": "=You are a top-tier AI strategist and educator. You specialize in turning complex AI breakthroughs into clear, easy-to-understand short articles that educate non-technical professionals on what matters in the AI world.\n\nGOAL:\nWrite a short article (350–500 words) based on the source material provided. The article should explain the core idea clearly, highlight its business or social relevance, and provide at least one real-world example or application.\n\nTARGET AUDIENCE:\n\nCurious professionals\n\nBusiness decision-makers\n\nAI-interested readers (non-technical)\n\nSTYLE & TONE:\n\nClear, simple, no jargon\n\nEducative, not hypey\n\nConcise paragraphs, no fluff\n\nWritten like a smart blog or explainer article\n\nSTRUCTURE:\n\nHeadline: Clear and informative\n\nIntro: Brief context or hook in 1–2 sentences\n\nMain Idea: What happened or what’s new\n\nExample / Use Case: A concrete example or implication\n\nWhy it Matters: Short paragraph on its impact or takeaway\n\nRULES:\n\nAvoid technical terms unless absolutely necessary, and always explain them simply\n\nUse real company names, tools, or data points where possible\n\nDo not use bullet points or emoji — this is not a listicle or post\n\nNo clickbait or exaggerated claims"
+        }
+      },
+      "id": "1f461aa2-39c7-4d53-873e-7a2f967b0cb9",
+      "name": "AI Agent (Enhanced)1",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        3856,
+        576
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "email article",
+        "height": 600,
+        "width": 380,
+        "color": 6
+      },
+      "id": "0f74c28d-44bd-429b-a595-c6ea394c9e8d",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4304,
+        480
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "article generator",
+        "height": 600,
+        "width": 500,
+        "color": 5
+      },
+      "id": "3e59e8a3-3e32-4c8b-9ce9-d5da8236ce5f",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3760,
+        480
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "topic fineder",
+        "height": 600,
+        "width": 300,
+        "color": 3
+      },
+      "id": "3da7ee06-f6d8-4cb7-8222-8a22dc4bc231",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3424,
+        480
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "Schedule Trigger",
+        "height": 600,
+        "width": 260
+      },
+      "id": "174412e3-38ac-4d15-ae2a-8f9337337d9e",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3152,
+        480
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "connections": {
+    "Convert to Email Format1": {
+      "main": [
+        [
+          {
+            "node": "Send Email1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Perplexity - Blog Topic Research Node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Perplexity - Blog Topic Research Node": {
+      "main": [
+        [
+          {
+            "node": "AI Agent (Enhanced)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent (Enhanced)1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Perplexity Search Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent (Enhanced)1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent (Enhanced)1": {
+      "main": [
+        [
+          {
+            "node": "Convert to Email Format1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateId": "5202",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "45e80b51298295275614e7a5a5697385783d51add4484b051742a74bf1e1b3e0"
+  }
+}
