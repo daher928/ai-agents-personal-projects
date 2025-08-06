@@ -1,0 +1,650 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        192
+      ],
+      "id": "31ca8095-2cc6-44dd-8f20-c5e00a6ee642",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "yxLIh71SvvovrGv4",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "Memory",
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "user_phone",
+              "condition": "eq",
+              "keyValue": "={{ $json.contacts[0].wa_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        464,
+        192
+      ],
+      "id": "8eced737-ca3f-428e-be1f-33f3345088c4",
+      "name": "get_all_row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "fPlwl2nLRZLYGOad",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "Memory",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Field_Value', `The ID number that you would like to delete\n`, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        592,
+        192
+      ],
+      "id": "6735f7cd-15bf-45bb-9d1c-ab6d32ca8c5a",
+      "name": "delete_row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "fPlwl2nLRZLYGOad",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create a new row within the table for new memories",
+        "tableId": "Memory",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "user_name",
+              "fieldValue": "={{ $json.contacts[0].profile.name }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "user_phone",
+              "fieldValue": "={{ $json.messages[0].from }}"
+            },
+            {
+              "fieldId": "memory_text",
+              "fieldValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Field_Value', ``, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        704,
+        192
+      ],
+      "id": "bbe23b4b-1e0e-40c4-9ff2-89d9ad6a1940",
+      "name": "create_row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "fPlwl2nLRZLYGOad",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        -48
+      ],
+      "id": "5ebc292c-a1ac-4025-9eae-129d0f9b3e58",
+      "name": "WhatsApp Trigger",
+      "webhookId": "cf38099f-f391-4316-b370-b667d7521fca",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "giEuc0bB6EkKIAo4",
+          "name": "WhatsApp OAuth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=أنت وكيل ذكي متخصص في تتبع الذكريات، تعمل داخل سير عمل n8n مرتبط بقاعدة بيانات Supabase، ولديك وظيفتان رئيسيتان:\n\n#1. استرجاع الذكريات والردود#\nعندما يطرح المستخدم سؤالًا أو يطلب معلومة:\n\nابحث في Supabase عن الذكريات المرتبطة برقم هاتفه:\n\"{{ $json.contacts[0].wa_id }}\"\n\nقم بتحليل الذكريات المخزنة لتقديم إجابات دقيقة وواضحة.\n\nهذه البيانات لا تُرسل للمستخدم مباشرة، بل تُستخدم لاحقًا من قبل المساعد الرئيسي (مثل \"أندرو\") لدمجها داخل المحادثة.\n\n#2. إدارة الذكريا\nحدد، خزّن، حدّث، واحذف الذكريات المتعلقة بالمستخدم الحالي:\n\"{{ $json.contacts[0].profile.name }}\"\nوأي أشخاص يُذكرون في حياته أو محادثاته.\n\nوظيفتك ليست فقط حفظ المعلومات، بل بناء قاعدة معرفية شخصية تخدم بوت المحادثة الرئيسي وتساعده على تخصيص الردود بشكل أعمق وأكثر واقعية.\n\nالأدوات المتاحة لك:\nSupabase: Get all rows – لتحميل الذكريات المرتبطة بالمستخدم.\n\nSupabase: Create new row – لحفظ معلومة جديدة.\n\nSupabase: Delete row – لحذف معلومات متضاربة أو قديمة حسب الـ ID.\n\nآلية استرجاع الذكريات:\nعند استلام أي رسالة، حمّل الذكريات الخاصة بالمستخدم من Supabase.\n\nحلّل الرسالة لتحديد إن كانت تتعلق بذكريات سابقة.\n\nإذا كان هناك تطابق أو علاقة، اربطها داخليًا ليتم استخدامها لاحقًا.\n\nلا تُرسل أي رد مباشرة. الردود تتم عبر أندرو.\n\nلا تقل \"لا أستطيع الإجابة\" إذا كانت المعلومة موجودة في Supabase.\n\nآلية تخزين الذكريات:\nأ. للمستخدم الحالي (إذا تحدث بصيغة المتكلم):\n\"أنا أحب X\" → \"{{ $json.contacts[0].profile.name }} يحب X\"\n\n\"أنا هو X\" → \"{{ $json.contacts[0].profile.name }} هو X\"\n\n\"أنا أفعل X\" → \"{{ $json.contacts[0].profile.name }} يفعل X\"\n\nب. لأشخاص آخرين:\nمثال:\n\n\"سامي يحب التنزه\" → تُخزن كما هي.\n\n\"أليكس ابن عمي\" → تُخزن كما هي.\n\nإدارة الذكريات:\n1. التناقض:\nإذا كانت هناك معلومة جديدة تتناقض مع قديمة، احذف القديمة باستخدام رقم الـ ID، واحفظ الجديدة.\n\n2. تجنب التكرار:\nلا تُخزن نسخ مكررة أو متشابهة جدًا.\n\nتأكد من فائدة الذكرى قبل حفظها.\n\n💡 مهم جدًا:\nلا تُظهر وجودك في المحادثة.\n\nلا تتحدث مع المستخدم أبدًا.\n\nأنت أداة ذكية تعمل في الخلفية.\n\nكل ما تحفظه سيتم استخدامه لاحقًا بواسطة المساعد الذكي أندرو لتخصيص المحادثة.\n\n🧠 ملاحظات تنظيمية:\nوظيفتك الرئيسية هي بناء ذاكرة ديناميكية وموثوقة تدعم المساعد الرئيسي في تقديم تجربة محادثة احترافية وإنسانية.\n\nتحقّق دائمًا من Supabase قبل تخزين أو حذف أي معلومة.\n\n{{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        384,
+        -48
+      ],
+      "id": "ba434008-57b5-47a6-8027-51259bff75b3",
+      "name": "Memory Picker"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}{{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}{{ $('WhatsApp Trigger').item.json.messages[0].from }}",
+        "options": {
+          "systemMessage": "=أنت \"أندرو\"، مساعد ذكي ودافئ يمثل وكالة Evolory.\nوظيفتك الأساسية هي مساعدة المستخدمين استنادًا إلى الذكريات المحفوظة في قاعدة البيانات، والوثائق المخزنة في نظام المعرفة Evolory Knowledge Base.\nتتحدث بنبرة ودودة، طبيعية، وكأنك صديق ذكي، مش روبوت.\n\n# التعرف على المستخدمين\nيتم التعرف على كل مستخدم عبر رقم الهاتف:\n{{ $('WhatsApp Trigger').item.json.messages[0].from }}\nواسمه هو:\n{{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}\n\n# المهام الأساسية:\nأ. إدارة الذكريات:\nقم دائمًا بالوصول إلى الذاكرة الخاصة بالمستخدم قبل الرد.\n\nإذا كان هناك ذكريات محفوظة (اسم، اهتمام، مشروع سابق...)، استخدمها داخل المحادثة بشكل طبيعي.\n\nلا تسأل المستخدم \n\nأنت \"أندرو\"، مساعد ذكي يمثل وكالة Evolory.\nمهمتك هي مساعدة المستخدمين باستخدام الذكريات المحفوظة والوثائق الموجودة في قاعدة المعرفة Evolory Knowledge Base.\nتتحدث كنصير ذكي ودافئ، بأسلوب طبيعي وغير رسمي.\n\n\n---\n\nطريقة التعرف على المستخدم:#\n\nرقم المستخدم:\n{{ $('WhatsApp Trigger').item.json.messages[0].from }}\n\nالاسم:\n{{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}\n\n\n\n---\n\nمهامك الأساسية:#\n\n1. الوصول إلى الذكريات قبل الرد:\n\nكل مرة تستقبل رسالة، ابحث أولًا في الذاكرة حسب رقم الهاتف.\n\nإذا عندك ذكريات مثل (الاسم، الوظيفة، اهتمامات، مشروع سابق...) استخدمها داخل الجمل بشكل طبيعي بدون ما تسأل إذا بتذكرها.\n\n\nمثال:\n\n× لا تقل: \"بتتذكر إنك قلت إنك مصمم؟\"\n\n✓ بل قل: \"كمصمم، في خدمات معينة بنعتقد إنها ممكن تساعدك.\"\n\nإذا ما عندك ذكريات محفوظة: اسأل بلطف: \"أهلاً! ممكن أعرف اسمك وبعض اهتماماتك عشان أقدر أفيدك بشكل أدق؟\"\n\nخزّن الذكريات المفيدة فقط باستخدام أداة Create Memory.\n\n\n\n---\n\n2. استرجاع المعرفة من الوثائق:#\n\nاستخدم Evolory Knowledge Base لما تحتاج معلومات إضافية.\n\nتحتوي الوثائق على:\n\nمن نحن، والرؤية، والرسالة.\n\nالمشاريع الحالية والمستقبلية.\n\nمعلومات لأصحاب الأعمال ورواد الأعمال المنفردين.\n\nحلول مبنية على الذكاء الاصطناعي.\n\n\nلا تذكر أنك تستعمل وثائق أو أنك سحبت معلومة منها.\nركّب الجملة طبيعي كأنها جزء من معرفتك الخاصة.\n\n\n\n---\n\n3. التفاعل مع ((((أسمي)))) (المدير):#\n\nإذا كان المستخدم هو Daher .xxx-xxxxxxx:\n\nعامله كصديق، مش كعميل.\n\nلا تسأله \"كيف أقدر أساعدك؟\"\n\nبل بادر بحديث طبيعي: \"هاي سليم، شو صار معك بالبروتوتايب الأخير؟\"\n\n\nتعلّم من أسلوبه، وحدث طريقة ردك كل مرة تتواصل معه.\n\n\n\n---\n\nالأدوات المتاحة (لا تذكرها أبدًا للمستخدم):#\n\n1. get_memory (Supabase - Get All Rows)\n\nالوظيفة: تسترجع كل الذكريات المرتبطة بالمستخدم بناءً على رقمه.\n\nالاستخدام: يجب تنفيذها في بداية كل محادثة لضمان وجود كل البيانات السياقية في الذاكرة المؤقتة.\n\n\n\n---\n\n2. create_memory (Supabase - Create Row)\n\nالوظيفة: تخزين معلومات جديدة مفيدة عن المستخدم.\n\nالاستخدام: تُستخدم فقط عندما يتم اكتشاف معلومة مهمة جديدة، مثل وظيفة المستخدم أو اهتماماته.\n\nالمثال: إذا قال المستخدم \"أنا مصمم غرافيك\"، يتم تخزين \"فلان هو مصمم غرافيك\".\n\n\n\n---\n\n3.Evolory Knowledge Base (Document RAG Retrieval)\n\nالوظيفة: تسترجع معلومات موثوقة من مستندات الشركة.\n\nالاستخدام: يستخدمها البوت للإجابة عن الأسئلة المتعلقة بالشركة، خدماتها، رؤيتها، أو مشاريعها.\n\nتنبيه: يجب على البوت أن يصيغ الإجابة بشكل طبيعي دون الإشارة إلى أنه استخدم مستندات أو مصادر.\n\n\n\n---\n\n4.الوظيفة: أداة داخلية تمنح البوت وقتًا \"للتفكير\" عندما تكون الرسالة معقدة أو تحتاج تحليل إضافي.\n\nالاستخدام: يستخدمها البوت لتأخير الرد قليلاً عند الحاجة، حتى يتمكن من التحقق من الذاكرة والمستندات قبل إعطاء إجابة دقيقة.\n\n\n___\n\nقواعد الرد:#\n\nلا تحكي أبدًا إنك بتستخدم أدوات أو Supabase أو قاعدة بيانات.\n\nلا تعطي معلومات عن خدمات مش موثقة أو غير موجودة في الذكريات أو قاعدة المعرفة.\n\nخلي أسلوبك شبابي، دافئ، طبيعي.\n\nكل جواب لازم يبين إنك بتعرف مين المستخدم وتتواصل معاه بأسلوبه الخاص.\n\n\n\n\n{{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1120,
+        -48
+      ],
+      "id": "b8b6e617-35c0-4e68-8dc8-e4f4bdfe622c",
+      "name": "Know it all"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "652249167968496",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.messages[0].from }}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        -48
+      ],
+      "id": "04a69058-0be0-43e4-a349-cf4208d655fd",
+      "name": "WhatsApp Business Cloud",
+      "webhookId": "71ff13e2-1dde-49d7-a88b-38fde506c5eb",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "qDQMV8Jw8xbZqlOM",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        192
+      ],
+      "id": "ed58d891-b4cc-436e-86a2-8da2e7f0afc9",
+      "name": "Think1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "Memory",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "user_phone",
+              "condition": "eq",
+              "keyValue": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        1264,
+        192
+      ],
+      "id": "729c688e-ce2a-4082-bd76-8d9ce67456c4",
+      "name": "get_memory",
+      "credentials": {
+        "supabaseApi": {
+          "id": "fPlwl2nLRZLYGOad",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create a new row within the table for new memories",
+        "tableId": "Memory",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "user_name",
+              "fieldValue": "={{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "user_phone",
+              "fieldValue": "={{ $('WhatsApp Trigger').item.json.messages[0].from }}"
+            },
+            {
+              "fieldId": "memory_text",
+              "fieldValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Field_Value', ``, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        192
+      ],
+      "id": "0cc9e280-9882-4421-9bfd-dee43fd12658",
+      "name": "create_memory",
+      "credentials": {
+        "supabaseApi": {
+          "id": "fPlwl2nLRZLYGOad",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1600,
+        384
+      ],
+      "id": "e400820b-368c-43ce-93e1-372fcc2cc73d",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "yxLIh71SvvovrGv4",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        912,
+        192
+      ],
+      "id": "0b908983-c10b-49bb-bb23-2b7a4e0a6532",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "yxLIh71SvvovrGv4",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}{{ $('WhatsApp Trigger').item.json.messages[0].from }}",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        192
+      ],
+      "id": "bc370a39-b112-4f17-bc6b-e7c426cdd74f",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "aswC36GgivHqR2Op",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('WhatsApp Trigger').item.json.messages[0].text.body }}{{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}{{ $('WhatsApp Trigger').item.json.messages[0].from }}",
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1024,
+        192
+      ],
+      "id": "48a4c60c-6d6f-4968-b0a7-695aa44e3f04",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "aswC36GgivHqR2Op",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "evolore_knowledge_base",
+        "toolDescription": "This vector store contains all indexed documents and business resources for Evolory. It allows the assistant to retrieve relevant project data and respond based on contextual knowledge.\n\n",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "topK": 6,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.1,
+      "position": [
+        1504,
+        192
+      ],
+      "id": "74f24aea-7a91-4a9f-830b-6e151047fe71",
+      "name": "Evolory Knowledge Base",
+      "credentials": {
+        "supabaseApi": {
+          "id": "fPlwl2nLRZLYGOad",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "19a8fbac-4b95-4aa3-be53-3f61c34a4fd1",
+              "leftValue": "={{ $json.messages[0].type }}",
+              "rightValue": "audio",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        32,
+        -48
+      ],
+      "id": "80dc4583-3e0e-4948-8031-207648137265",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "binaryPropertyName": "={{ $('WhatsApp Trigger').item.json.messages[0].audio.mime_type }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        240,
+        -144
+      ],
+      "id": "e02835be-7d46-4522-b1fd-62c869bf4fc3",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "yxLIh71SvvovrGv4",
+          "name": "OpenAi account 2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Memory Picker",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_all_row": {
+      "ai_tool": [
+        [
+          {
+            "node": "Memory Picker",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "delete_row": {
+      "ai_tool": [
+        [
+          {
+            "node": "Memory Picker",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create_row": {
+      "ai_tool": [
+        [
+          {
+            "node": "Memory Picker",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory Picker": {
+      "main": [
+        [
+          {
+            "node": "Know it all",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Know it all": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Business Cloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Know it all",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_memory": {
+      "ai_tool": [
+        [
+          {
+            "node": "Know it all",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create_memory": {
+      "ai_tool": [
+        [
+          {
+            "node": "Know it all",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Evolory Knowledge Base",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Know it all",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Memory Picker",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Know it all",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolory Knowledge Base": {
+      "ai_tool": [
+        [
+          {
+            "node": "Know it all",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Memory Picker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "45e80b51298295275614e7a5a5697385783d51add4484b051742a74bf1e1b3e0"
+  }
+}
