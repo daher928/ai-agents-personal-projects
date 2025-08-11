@@ -4,7 +4,7 @@ The `Daily AI Article Agent` is an automated workflow designed to generate and d
 
 ## Features
 
-1. **Daily Scheduling**:
+1. **Daily Scheduling & Telegram Bot Trigger on demand**:
    - The workflow triggers every day at 7 AM, ensuring timely delivery of AI news updates.
 
 2. **AI Topic Research**:
@@ -21,6 +21,9 @@ The `Daily AI Article Agent` is an automated workflow designed to generate and d
 
 5. **Automated Email Delivery**:
    - Sends the formatted article directly to subscribers via Gmail integration.
+
+6. **Telegram Delivery**:
+   - Sends the formatted article & image directly to Telegram.
 
 ## Workflow Components
 
