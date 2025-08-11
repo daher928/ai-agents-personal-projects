@@ -7,116 +7,75 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        4944,
-        1872
+        3920,
+        2368
       ],
       "id": "82c730fb-6958-4a58-83c2-579079d866e7",
       "name": "Google Gemini Chat Model1",
       "credentials": {
         "googlePalmApi": {
-          "id": "REDACTED",
-          "name": "Google Gemini API account"
+          "id": "GgImmpXDDw1x6nsF",
+          "name": "[Billed] Gemini API Daher personal"
         }
       }
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "={{ $json.content.parts[0].text }}",
-        "hasOutputParser": true,
-        "options": {
-          "systemMessage": "=You are a top-tier AI strategist and viral LinkedIn storyteller. You turn cutting-edge AI updates into bold, story-driven, actionable and engaging LinkedIn posts.\n\nLanguage:\nArabic with palestinian accent\n\nAUDIENCE:\n- Non-technical professionals\n- Decision-makers and impactful people\n- curious thinkers who want to understand AI’s\n- people curious about learning about AI\n\nSTYLE:\n- Storytelling, analogy-rich, metaphor-driven\n- Relatable — explain like to a smart friend\n- Skimmable — headers, short paras, spacing, light emojis\n- Bold but truthful — no hype, just clarity\n\nTASK:\nFrom the source material, craft a post that:\n- hooks the users in a bold but truthful way\n- Explains the key idea or tool clearly\n- Provides 1+ example of a **real-world use case**\n- Shares the “why it matters” with a sharp, opinionated lens but without actually using a title for this section\n- at the end share 1 link only that is a referene to the article we're basing the content on\n\nPOST LENGTH: 1500-2000 characters\n\nHOOK ROTATION LOGIC:\nRandomly choose a different style of hook each day:\n1. “What if I told you that AI could ______?”\n2. “This AI breakthrough is about to change ______.”\n3. “Yesterday’s science fiction is today’s startup pitch.”\n4. “Let’s talk about something mind-blowing in AI...”\n5. “🧠 You’re about to understand something few people do.”\n\nRULES:\n- No buzzwords unless explained\n- Mention real tools/frameworks whenever possible\n- Do not invent facts"
-        }
-      },
-      "id": "5901dcc1-0478-492e-ab7a-83ea571935f3",
-      "name": "Post Scheduler AI Agent1",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "position": [
-        4976,
-        1680
-      ],
-      "typeVersion": 2
-    },
-    {
-      "parameters": {
-        "content": "# Post Scheduler AI Agent\n- researches and decides best time to post \n- creates a Google calendar event to remind me to review and post",
-        "height": 760,
-        "width": 588,
-        "color": 7
+        "content": "# Social Media Manager AI Agent\n## - researches and decides best time to post \n## - post or reminder",
+        "height": 616,
+        "width": 844,
+        "color": 2
       },
       "id": "4c56771d-73c8-424c-87e8-0608a74790d3",
       "name": "Sticky Note27",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        4864,
-        1456
+        3856,
+        1984
       ],
       "typeVersion": 1
     },
     {
       "parameters": {
-        "content": "## Time based Trigger",
+        "content": "# Time based Trigger",
         "height": 276,
-        "width": 356
+        "width": 372
       },
       "id": "0d2de703-dda4-4604-af8d-2397c0d19ef0",
       "name": "Sticky Note17",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2320,
-        1488
+        2304,
+        1664
       ],
       "typeVersion": 1
     },
     {
       "parameters": {
-        "updates": [
-          "*"
-        ],
-        "additionalFields": {}
-      },
-      "id": "791799ce-5285-4d45-8340-5dcd5ec486cb",
-      "name": "Listen for incoming events",
-      "type": "n8n-nodes-base.telegramTrigger",
-      "position": [
-        1792,
-        2080
-      ],
-      "webhookId": "REDACTED",
-      "typeVersion": 1,
-      "credentials": {
-        "telegramApi": {
-          "id": "REDACTED",
-          "name": "Telegram account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "resource": "file",
-        "fileId": "={{$json.message.voice.file_id}}",
+        "fileId": "={{ $('Listen for incoming messages').item.json.message.voice.file_id }}",
         "additionalFields": {}
       },
       "id": "f6f1ecff-cbee-4121-8677-b93f3cee1f1f",
       "name": "Download voice file",
       "type": "n8n-nodes-base.telegram",
       "position": [
-        2208,
-        2192
+        2240,
+        2272
       ],
       "typeVersion": 1.2,
-      "webhookId": "REDACTED",
+      "webhookId": "ee783b33-967f-4f00-a502-7c860f4d8b7b",
       "credentials": {
         "telegramApi": {
-          "id": "REDACTED",
+          "id": "HbvuuLWBoYmbJ8Fr",
           "name": "Telegram account"
         }
       }
     },
     {
       "parameters": {
-        "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
-        "text": "=Sorry, {{ $('Listen for incoming events').first().json.message.from.first_name }}! This command is not supported yet. Please send text or voice messages.",
+        "chatId": "={{ $('Listen for incoming messages').first().json.message.from.id }}",
+        "text": "=Sorry, {{ $('Listen for incoming messages').first().json.message.from.first_name }}! This command is not supported yet. Please send text or voice messages.",
         "additionalFields": {
           "appendAttribution": false,
           "parse_mode": "Markdown"
@@ -126,14 +85,14 @@
       "name": "Send error message",
       "type": "n8n-nodes-base.telegram",
       "position": [
-        2192,
-        1888
+        2272,
+        2016
       ],
       "typeVersion": 1.2,
-      "webhookId": "REDACTED",
+      "webhookId": "6196744d-28b1-4ddc-ae73-8dd0e7eb10a8",
       "credentials": {
         "telegramApi": {
-          "id": "REDACTED",
+          "id": "HbvuuLWBoYmbJ8Fr",
           "name": "Telegram account"
         }
       }
@@ -141,36 +100,36 @@
     {
       "parameters": {
         "content": "## Transcribe audio",
-        "height": 194.83713159725437,
-        "width": 367.73614918993235,
+        "height": 195,
+        "width": 448,
         "color": 6
       },
       "id": "c849a5f3-088a-40c7-a265-8d64bfb3087d",
       "name": "Sticky Note2",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2176,
-        2144
+        2208,
+        2224
       ],
       "typeVersion": 1
     },
     {
       "parameters": {
         "operation": "sendChatAction",
-        "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}"
+        "chatId": "={{ $('Listen for incoming messages').first().json.message.from.id }}"
       },
       "id": "9a347d3a-406e-49af-998f-b6d235c1dfec",
       "name": "Send Typing action",
       "type": "n8n-nodes-base.telegram",
       "position": [
-        1984,
-        1888
+        2000,
+        2048
       ],
       "typeVersion": 1.2,
-      "webhookId": "REDACTED",
+      "webhookId": "b3c94ab8-c2b2-44a2-8e10-57dd5f188705",
       "credentials": {
         "telegramApi": {
-          "id": "REDACTED",
+          "id": "HbvuuLWBoYmbJ8Fr",
           "name": "Telegram account"
         }
       }
@@ -187,7 +146,6 @@
                   "caseSensitive": true,
                   "typeValidation": "strict"
                 },
-                "combinator": "and",
                 "conditions": [
                   {
                     "operator": {
@@ -195,10 +153,12 @@
                       "operation": "notEmpty",
                       "singleValue": true
                     },
-                    "leftValue": "={{ $json.message.text }}",
-                    "rightValue": "/"
+                    "leftValue": "={{ $('Listen for incoming messages').item.json.message.text }}",
+                    "rightValue": "/",
+                    "id": "9894925e-3c28-4646-98c0-4e648745b4f8"
                   }
-                ]
+                ],
+                "combinator": "and"
               },
               "renameOutput": true,
               "outputKey": "Text"
@@ -211,7 +171,6 @@
                   "caseSensitive": true,
                   "typeValidation": "strict"
                 },
-                "combinator": "and",
                 "conditions": [
                   {
                     "id": "dd41bbf0-bee0-450b-9160-b769821a4abc",
@@ -220,10 +179,11 @@
                       "operation": "exists",
                       "singleValue": true
                     },
-                    "leftValue": "={{ $json.message.voice}}",
+                    "leftValue": "={{ $('Listen for incoming messages').item.json.message.voice }}",
                     "rightValue": ""
                   }
-                ]
+                ],
+                "combinator": "and"
               },
               "renameOutput": true,
               "outputKey": "Voice"
@@ -238,8 +198,8 @@
       "name": "Determine content type",
       "type": "n8n-nodes-base.switch",
       "position": [
-        1984,
-        2160
+        2032,
+        2256
       ],
       "typeVersion": 3.2
     },
@@ -259,29 +219,29 @@
       "typeVersion": 1,
       "position": [
         2384,
-        2192
+        2272
       ],
       "id": "b83f9463-cbea-4611-96ce-5dcdf8b07f1a",
       "name": "Transcribe a recording",
       "credentials": {
         "googlePalmApi": {
-          "id": "REDACTED",
-          "name": "Google Gemini API account"
+          "id": "GgImmpXDDw1x6nsF",
+          "name": "[Billed] Gemini API Daher personal"
         }
       }
     },
     {
       "parameters": {
-        "content": "## Telegram text/voice trigger",
-        "height": 596,
-        "width": 932
+        "content": "# Telegram text/voice trigger",
+        "height": 500,
+        "width": 964
       },
       "id": "c486367d-a253-42e9-8a60-45b757fe2aea",
       "name": "Sticky Note18",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1744,
-        1792
+        1712,
+        1968
       ],
       "typeVersion": 1
     },
@@ -302,8 +262,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2560,
-        2080
+        2512,
+        2272
       ],
       "id": "db870e2c-0acf-4a00-b34d-9d4b6358df1b",
       "name": "create a \"text\" variable"
@@ -325,8 +285,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2544,
-        1920
+        2528,
+        2048
       ],
       "id": "ef549787-11c9-4ae2-a868-1721ede85a6f",
       "name": "create a \"text\" variable1"
@@ -335,93 +295,76 @@
       "parameters": {
         "content": "Email",
         "height": 220,
-        "width": 236,
-        "color": 4
+        "width": 444,
+        "color": 3
       },
       "id": "370709a4-1ff6-4f19-97a0-6f8b2014d90e",
       "name": "Sticky Note19",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        4464,
-        1616
+        3344,
+        2160
       ],
       "typeVersion": 1
     },
     {
       "parameters": {
-        "content": "# Create Image or Upload Image for Social Post",
-        "height": 556,
-        "width": 556,
-        "color": 7
+        "content": "# Create Image",
+        "height": 476,
+        "width": 268
       },
       "id": "b39dea6e-eb8c-4042-a769-81d00147e6b5",
       "name": "Sticky Note20",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        3584,
-        1968
+        3856,
+        1472
       ],
       "typeVersion": 1
     },
     {
       "parameters": {
-        "content": "# Find interesting & recent AI Topic",
-        "height": 552,
-        "width": 368,
-        "color": 7
+        "content": "# Find recent interesting AI Topic\n## via Gemini + SerpApi tool",
+        "height": 488,
+        "width": 560,
+        "color": 6
       },
       "id": "0e87f441-ce4e-4c37-a4b4-1e628f07ade6",
       "name": "Sticky Note21",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2800,
-        1440
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "content": "## Create Post Image",
-        "height": 260,
-        "width": 244,
-        "color": 3
-      },
-      "id": "5628e77f-63aa-4e14-ab2b-6974985fa42b",
-      "name": "Sticky Note22",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        3696,
-        2240
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "content": "# Send Final Results to Email & Telegram",
-        "height": 760,
-        "width": 588,
-        "color": 7
-      },
-      "id": "f8ad5fa9-2425-4b41-8090-1bbcc7db8828",
-      "name": "Sticky Note23",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        4192,
+        2704,
         1456
       ],
       "typeVersion": 1
     },
     {
       "parameters": {
+        "content": "# Send Final Results to Email & Telegram\n## Wait for confirmation from Telegram to continue",
+        "height": 856,
+        "width": 556,
+        "color": 7
+      },
+      "id": "f8ad5fa9-2425-4b41-8090-1bbcc7db8828",
+      "name": "Sticky Note23",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3280,
+        1968
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
         "schemaType": "manual",
-        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"name\": {\n\t\t\t\"type\": \"string\"\n\t\t},\n\t\t\"description\": {\n\t\t\t\"type\": \"string\"\n\t\t},\n\t\t\"platform_posts\": {\n\t\t\t\"type\": \"object\",\n\t\t\t\"properties\": {\n\t\t\t\t\"LinkedIn\": {\n\t\t\t\t\t\"type\": \"object\",\n\t\t\t\t\t\"properties\": {\n                        \"image_suggestion\": {\n                  \t\t\t\"type\": \"string\"\n                  \t\t},\n\t\t\t\t\t\t\"post\": {\n\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"hashtags\": {\n\t\t\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"call_to_action\": {\n\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t},\n                      \"image\": {\n  \"type\": \"array\",\n  \"items\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"response\": {\n        \"type\": \"array\",\n        \"items\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"mimeType\": {\n              \"type\": \"string\"\n            },\n            \"fileType\": {\n              \"type\": \"string\"\n            },\n            \"fileExtension\": {\n              \"type\": \"string\"\n            },\n            \"fileName\": {\n              \"type\": \"string\"\n            },\n            \"id\": {\n              \"type\": \"string\"\n            },\n            \"fileSize\": {\n              \"type\": \"string\"\n            }\n          },\n          \"required\": [\n            \"mimeType\",\n            \"fileType\",\n            \"fileExtension\",\n            \"fileName\",\n            \"id\",\n            \"fileSize\"\n          ]\n        }\n      }\n    },\n    \"required\": [\n      \"response\"\n    ]\n  }\n}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"additional_notes\": {\n\t\t\t\"type\": \"string\"\n\t\t}\n\t}\n}\n"
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"name\": {\n\t\t\t\"type\": \"string\"\n\t\t},\n\t\t\"description\": {\n\t\t\t\"type\": \"string\"\n\t\t},\n\t\t\"platform_posts\": {\n\t\t\t\"type\": \"object\",\n\t\t\t\"properties\": {\n\t\t\t\t\"LinkedIn\": {\n\t\t\t\t\t\"type\": \"object\",\n\t\t\t\t\t\"properties\": {\n                        \"image_suggestion\": {\n                  \t\t\t\"type\": \"string\"\n                  \t\t},\n\t\t\t\t\t\t\"post\": {\n\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"hashtags\": {\n\t\t\t\t\t\t\t\"type\": \"array\",\n\t\t\t\t\t\t\t\"items\": {\n\t\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"call_to_action\": {\n\t\t\t\t\t\t\t\"type\": \"string\"\n\t\t\t\t\t\t},\n                      \"image\": {\n  \"type\": \"array\",\n  \"items\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"response\": {\n        \"type\": \"array\",\n        \"items\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"mimeType\": {\n              \"type\": \"string\"\n            },\n            \"fileType\": {\n              \"type\": \"string\"\n            },\n            \"fileExtension\": {\n              \"type\": \"string\"\n            },\n            \"fileName\": {\n              \"type\": \"string\"\n            },\n            \"id\": {\n              \"type\": \"string\"\n            },\n            \"fileSize\": {\n              \"type\": \"string\"\n            }\n          },\n          \"required\": [\n            \"mimeType\",\n            \"fileType\",\n            \"fileExtension\",\n            \"fileName\",\n            \"id\",\n            \"fileSize\"\n          ]\n        }\n      }\n    },\n    \"required\": [\n      \"response\"\n    ]\n  }\n}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t},\n\t\t\"additional_notes\": {\n\t\t\t\"type\": \"string\"\n\t\t}\n\t}\n}\n"
       },
       "id": "6e4cfd47-b9c4-41ae-943a-905c140bef20",
       "name": "Social Media Content",
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "position": [
-        3584,
-        1792
+        3696,
+        1808
       ],
       "typeVersion": 1.2
     },
@@ -434,47 +377,29 @@
           "mode": "list",
           "cachedResultName": "models/imagen-3.0-generate-002"
         },
-        "prompt": "=Generate an image for the Linkedin post content below. Notes:\n- Do not include any text\n- Use high-end design, modern, techy and HD design elements\n\n{{ $json.output.platform_posts.LinkedIn.post }}\n\n",
+        "prompt": "=Create a **text-free** hero image for a LinkedIn post.\nRead the content below and extract the single strongest visual concept; illustrate it with a modern, premium, tech-forward style.\n\n**Content:**\n{{ $json.output.platform_posts.LinkedIn.post }}\n\n**Requirements**\n\n* No text, \n* Clean geometry, subtle gradients, soft glows, depth, and ample negative space.\n* high contrast; futuristic/minimal aesthetic.\n* One clear focal point; composition safe for LinkedIn crops.\n* Output PNG at **1200×1200** (or **1920×1080** if the content implies a wide scene), HD quality.\n\n**Guidance (adapt to the post theme)**\n\n* Data/insights → abstract charts, flowing lines, particles.\n* AI/automation → nodes, circuits, connected shapes, subtle brain/network motifs.\n* Growth/learning → upward paths, steps, horizon light.\n* Community/collab → interlocking shapes or networks.\n\n**Negative prompt**\ntext, captions, watermarks, pixelation, clutter, low-res.\n",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        3776,
-        2320
+        3936,
+        1584
       ],
       "id": "b3ff7809-01d7-4f58-9b57-67446ce64a7b",
       "name": "Generate an image",
       "credentials": {
         "googlePalmApi": {
-          "id": "REDACTED",
-          "name": "Google Gemini API account"
+          "id": "GgImmpXDDw1x6nsF",
+          "name": "[Billed] Gemini API Daher personal"
         }
       },
       "onError": "continueRegularOutput"
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "={{ $json.text }}",
-        "hasOutputParser": true,
-        "options": {
-          "systemMessage": "=You are a top-tier AI strategist and viral LinkedIn storyteller. You turn cutting-edge AI updates into bold, story-driven, actionable and engaging LinkedIn posts.\n\nLanguage:\nArabic with palestinian accent\n\nAUDIENCE:\n- Non-technical professionals\n- Decision-makers and impactful people\n- curious thinkers who want to understand AI’s\n- people curious about learning about AI\n\nSTYLE:\n- Storytelling, analogy-rich, metaphor-driven\n- Relatable — explain like to a smart friend\n- Skimmable — headers, short paras, spacing, light emojis\n- Bold but truthful — no hype, just clarity\n\nTASK:\nFrom the source material, craft a post that:\n- hooks the users in a bold but truthful way\n- Explains the key idea or tool clearly\n- Provides 1+ example of a **real-world use case**\n- Shares the “why it matters” with a sharp, opinionated lens but without actually using a title for this section\n- at the end share 1 link only that is a referene to the article we're basing the content on\n\nPOST LENGTH: 1500-2000 characters\n\nHOOK ROTATION LOGIC:\nRandomly choose a different style of hook each day:\n1. “What if I told you that AI could ______?”\n2. “This AI breakthrough is about to change ______.”\n3. “Yesterday’s science fiction is today’s startup pitch.”\n4. “Let’s talk about something mind-blowing in AI...”\n5. “🧠 You’re about to understand something few people do.”\n\nRULES:\n- No buzzwords unless explained\n- Mention real tools/frameworks whenever possible\n- Do not invent facts"
-        }
-      },
-      "id": "4ed2414e-e8fc-4b36-8cab-a6e0c418094d",
-      "name": "AI Agent (Enhanced)1",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "position": [
-        3440,
-        1520
-      ],
-      "typeVersion": 2
-    },
-    {
-      "parameters": {
         "mode": "markdownToHtml",
-        "markdown": "={{ $('AI Agent (Enhanced)1').item.json.output.platform_posts.LinkedIn.post }}\n\nImage: \n{{ $json.webViewLink }}\n",
+        "markdown": "={{ $('Content Creator AI Agent').item.json.output.platform_posts.LinkedIn.post }}\n\nImage: \n{{ $json.webViewLink }}\n",
         "options": {
           "backslashEscapesHTMLTags": true,
           "emoji": true
@@ -484,43 +409,11 @@
       "name": "Convert to Email Format1",
       "type": "n8n-nodes-base.markdown",
       "position": [
-        4240,
-        1808
+        3440,
+        2208
       ],
       "typeVersion": 1,
       "alwaysOutputData": false
-    },
-    {
-      "parameters": {
-        "name": "={{$now.format('dd_MM_yyyy_hh_mm_ss') }}_{{ $json.fileName }}",
-        "driveId": {
-          "__rl": true,
-          "value": "REDACTED",
-          "mode": "url"
-        },
-        "folderId": {
-          "__rl": true,
-          "mode": "list",
-          "value": "root",
-          "cachedResultName": "/ (Root folder)"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleDrive",
-      "typeVersion": 3,
-      "position": [
-        3968,
-        2320
-      ],
-      "id": "f3b40d8a-e0bf-46a4-ab31-d762dbbcdf88",
-      "name": "Upload file1",
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "REDACTED",
-          "name": "Google Drive account"
-        }
-      },
-      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -529,81 +422,82 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        3424,
-        1792
+        3360,
+        1808
       ],
       "id": "d564f665-c783-428a-ab7b-e03588fdb36d",
       "name": "Google Gemini Chat Model2",
       "credentials": {
         "googlePalmApi": {
-          "id": "REDACTED",
-          "name": "Google Gemini API account"
+          "id": "XTVhSdHDuvFjkfhd",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
-    },
-    {
-      "parameters": {
-        "content": "TO GET TELEGRAM CHAT ID:\n\nREDACTED",
-        "height": 96,
-        "width": 592
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        4192,
-        2240
-      ],
-      "typeVersion": 1,
-      "id": "9d4d326b-3a25-4c98-8174-5b41b9be952f",
-      "name": "Sticky Note1"
     },
     {
       "parameters": {
         "operation": "sendPhoto",
-        "chatId": "REDACTED",
-        "file": "={{ $('Upload file1').item.json.webContentLink }}",
+        "chatId": "={{$vars.telegram_chat_id}}",
+        "file": "={{ $('Upload file to Drive').item.json.webContentLink }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        4544,
-        1888
+        3424,
+        2448
       ],
       "id": "a75682e4-ecff-4de6-8df8-23114231d216",
       "name": "Send Content image1",
-      "webhookId": "REDACTED",
+      "webhookId": "0568efbe-b011-4be8-a127-b08763ae462b",
       "credentials": {
         "telegramApi": {
-          "id": "REDACTED",
+          "id": "HbvuuLWBoYmbJ8Fr",
           "name": "Telegram account"
         }
       }
     },
     {
       "parameters": {
-        "chatId": "REDACTED",
-        "text": "={{ $('AI Agent (Enhanced)1').item.json.output.platform_posts.LinkedIn.post }}",
-        "additionalFields": {}
+        "operation": "sendAndWait",
+        "chatId": "={{$vars.telegram_chat_id}}",
+        "message": "={{ $('Content Creator AI Agent').item.json.output.platform_posts.LinkedIn.post }}\n\nعاجبك المحتوى؟ نكمّل؟",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double",
+            "approveLabel": "✅ نار وشرار",
+            "disapproveLabel": "❌ غباء اصطناعي"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 5,
+              "resumeUnit": "minutes"
+            }
+          },
+          "appendAttribution": false
+        }
       },
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        4544,
-        2048
+        3424,
+        2624
       ],
       "id": "4b98b299-22b0-461b-97d8-d5d8807c43b6",
       "name": "Send content1",
-      "webhookId": "REDACTED",
+      "webhookId": "0568efbe-b011-4be8-a127-b08763ae462b",
       "credentials": {
         "telegramApi": {
-          "id": "REDACTED",
+          "id": "HbvuuLWBoYmbJ8Fr",
           "name": "Telegram account"
         }
       }
     },
     {
       "parameters": {
-        "sendTo": "REDACTED",
+        "sendTo": "",
         "subject": "=Today's potential post is here!",
         "message": "={{ $json.data }}",
         "options": {}
@@ -612,14 +506,14 @@
       "name": "Send Email1",
       "type": "n8n-nodes-base.gmail",
       "position": [
-        4544,
-        1680
+        3616,
+        2208
       ],
       "typeVersion": 2.1,
-      "webhookId": "REDACTED",
+      "webhookId": "bad24681-1bc1-4c74-b813-337fa6817688",
       "credentials": {
         "gmailOAuth2": {
-          "id": "REDACTED",
+          "id": "H44bMxnDCEoHqJwZ",
           "name": "Gmail account"
         }
       }
@@ -628,15 +522,15 @@
       "parameters": {
         "content": "Telegram",
         "height": 348,
-        "width": 268,
+        "width": 492,
         "color": 5
       },
       "id": "853a391a-1c94-4b95-98f7-0750c6d4e8b8",
       "name": "Sticky Note24",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        4448,
-        1856
+        3312,
+        2416
       ],
       "typeVersion": 1
     },
@@ -654,8 +548,8 @@
       "name": "Schedule Trigger",
       "type": "n8n-nodes-base.scheduleTrigger",
       "position": [
-        2448,
-        1584
+        2416,
+        1760
       ],
       "typeVersion": 1.2
     },
@@ -676,26 +570,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3136,
-        1552
+        3120,
+        1632
       ],
       "id": "62fa0a46-d44e-4da9-8fcf-8100a8932e47",
       "name": "create a \"text\" variable2"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=You are an expert AI researcher and content strategist. Find an interesting, recent, and impactful AI-related development from the past 7 days (Today is {{ $today }} — preferably from credible sources or trending news outlets. Focus on topics that:\n- Have real-world business implications\n- Can be understood by beginners without technical background and also professionals\n- Are likely to trend on social media (LinkedIn, X)\n\nReturn a detailed summary of the article, key implications, and why it matters. Cite the original source and include at least one source URL",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        2864,
-        1648
-      ],
-      "id": "017da61f-b5e4-4e0e-bebb-a930601f2693",
-      "name": "AI Agent1"
     },
     {
       "parameters": {
@@ -704,33 +583,17 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        2864,
-        1792
+        2784,
+        1776
       ],
       "id": "f46ba574-8cf8-46eb-87bb-e89b2fbf784f",
       "name": "Google Gemini Chat Model4",
       "credentials": {
         "googlePalmApi": {
-          "id": "REDACTED",
-          "name": "Google Gemini API account"
+          "id": "XTVhSdHDuvFjkfhd",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
-    },
-    {
-      "parameters": {
-        "content": "## via Gemini + SerpApi tool",
-        "height": 356,
-        "width": 292,
-        "color": 6
-      },
-      "id": "9c012244-4ac0-4a6b-b16c-da2125339e35",
-      "name": "Sticky Note28",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        2832,
-        1568
-      ],
-      "typeVersion": 1
     },
     {
       "parameters": {
@@ -742,14 +605,14 @@
       "type": "n8n-nodes-serpapi.serpApiTool",
       "typeVersion": 1,
       "position": [
-        3024,
-        1824
+        3008,
+        1792
       ],
       "id": "d3cb1f35-e009-4f2b-bfca-bfe6522d6673",
       "name": "Google search in SerpApi",
       "credentials": {
         "serpApi": {
-          "id": "REDACTED",
+          "id": "LZBxKhCrjIlA17fS",
           "name": "SerpAPI account"
         }
       }
@@ -757,33 +620,18 @@
     {
       "parameters": {
         "content": "# Topic On Demand",
-        "height": 552,
-        "width": 368,
-        "color": 7
+        "height": 504,
+        "width": 560,
+        "color": 6
       },
       "id": "0016b76b-52a4-4b26-a63b-3739d7fd62d1",
       "name": "Sticky Note25",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2800,
-        2016
+        2704,
+        1968
       ],
       "typeVersion": 1
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=You are an expert AI researcher and content strategist. \nFind an interesting, recent, and impactful AI-related development about the following topic:\n{{ $json.text }} \n\nArticle/topic timeframe: from the past 30 days (Today is {{ $today }} — preferably from credible sources or trending news outlets.\n\nFocus on articles that:\n- Can be understood by beginners without technical background and also professionals\n- Are likely to trend on social media (LinkedIn, X)\n\nReturn a detailed summary of the article, key implications, and why it matters. Cite the original source and include at least one source URL",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        2864,
-        2224
-      ],
-      "id": "36ad3b38-060b-40ff-abcf-6d5ce6aaff41",
-      "name": "AI Agent2"
     },
     {
       "parameters": {
@@ -792,33 +640,17 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        2864,
-        2368
+        2768,
+        2288
       ],
       "id": "ede7f50e-7690-4496-bfe6-77573359f73d",
       "name": "Google Gemini Chat Model5",
       "credentials": {
         "googlePalmApi": {
-          "id": "REDACTED",
-          "name": "Google Gemini API account"
+          "id": "XTVhSdHDuvFjkfhd",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
-    },
-    {
-      "parameters": {
-        "content": "## via Gemini + SerpApi tool",
-        "height": 356,
-        "width": 292,
-        "color": 6
-      },
-      "id": "e84dafe3-cdff-4c54-a7c7-73096d1bf5d3",
-      "name": "Sticky Note29",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        2832,
-        2144
-      ],
-      "typeVersion": 1
     },
     {
       "parameters": {
@@ -830,14 +662,14 @@
       "type": "n8n-nodes-serpapi.serpApiTool",
       "typeVersion": 1,
       "position": [
-        3024,
-        2400
+        2912,
+        2288
       ],
       "id": "03b11d93-7d7d-4395-9bdc-be265373ad41",
       "name": "Google search in SerpApi1",
       "credentials": {
         "serpApi": {
-          "id": "REDACTED",
+          "id": "LZBxKhCrjIlA17fS",
           "name": "SerpAPI account"
         }
       }
@@ -847,14 +679,14 @@
         "content": "# Create Content",
         "height": 476,
         "width": 556,
-        "color": 7
+        "color": 4
       },
       "id": "f7a89902-10bb-4727-8e72-85a210657458",
       "name": "Sticky Note26",
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         3280,
-        1456
+        1472
       ],
       "typeVersion": 1
     },
@@ -875,11 +707,355 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3136,
-        2064
+        3072,
+        2112
       ],
       "id": "2d4d780d-713f-4df7-9f7d-5159cb4ca292",
       "name": "create a \"text\" variable3"
+    },
+    {
+      "parameters": {
+        "person": "sspIh9DMyB",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+        "additionalFields": {
+          "visibility": "PUBLIC"
+        }
+      },
+      "type": "n8n-nodes-base.linkedInTool",
+      "typeVersion": 1,
+      "position": [
+        4256,
+        2368
+      ],
+      "id": "e296616e-de94-465a-b23e-334fe39c39ed",
+      "name": "Create a post in LinkedIn",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "pyOSu4NqZ8rmEZZM",
+          "name": "LinkedIn account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "arabailabteam@gmail.com",
+          "mode": "list",
+          "cachedResultName": "arabailabteam@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ $('Convert to Email Format1').item.json.data }}\n\n{{ $('Upload file to Drive').item.json.webViewLink }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}",
+          "visibility": "private"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        4160,
+        2368
+      ],
+      "id": "b92acc42-fd8e-42bf-ad20-a9cfef5de1e8",
+      "name": "Create an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "3xg3sSHwrvjxxHMe",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$vars.telegram_chat_id}}",
+        "text": "بتوفر 🤨🤨🤨",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3664,
+        2640
+      ],
+      "id": "770a6f0c-ac52-4e4c-8e12-80ceaf6b1841",
+      "name": "Not Approved Message",
+      "webhookId": "f738b310-3c60-4676-93f0-3095ab3d9569",
+      "credentials": {
+        "telegramApi": {
+          "id": "HbvuuLWBoYmbJ8Fr",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "*"
+        ],
+        "additionalFields": {}
+      },
+      "id": "791799ce-5285-4d45-8340-5dcd5ec486cb",
+      "name": "Listen for incoming messages",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [
+        1744,
+        2144
+      ],
+      "webhookId": "322dce18-f93e-4f86-b9b1-3305519b7834",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "HbvuuLWBoYmbJ8Fr",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert AI researcher and content strategist. \nFind an interesting, recent, and impactful AI-related development about the following topic:\n{{ $json.text }} \n\nArticle/topic timeframe: from the past 30 days (Today is {{ $today }} — preferably from credible sources or trending news outlets.\n\nFocus on articles that:\n- Can be understood by beginners without technical background and also professionals\n- Are likely to trend on social media (LinkedIn, X)\n\nReturn a detailed summary of the article, key implications, and why it matters. Cite the original source and include at least one source URL",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2768,
+        2080
+      ],
+      "id": "36ad3b38-060b-40ff-abcf-6d5ce6aaff41",
+      "name": "On Demand Topic Research AI Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert AI researcher and content strategist. Find an interesting, recent, and impactful AI-related development from the past 7 days (Today is {{ $today }} — preferably from credible sources or trending news outlets. Focus on topics that:\n- Have real-world business implications\n- Can be understood by beginners without technical background and also professionals\n- Are likely to trend on social media (LinkedIn, X)\n\nReturn a detailed summary of the article, key implications, and why it matters. Cite the original source and include at least one source URL",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2784,
+        1632
+      ],
+      "id": "017da61f-b5e4-4e0e-bebb-a930601f2693",
+      "name": "Research AI Topics AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        3584,
+        1808
+      ],
+      "id": "3a2e8814-04d0-4732-81fc-9c6274f97f33",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "218771de-ec8a-43b3-b3bb-c7bcd1a69604",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3664,
+        2432
+      ],
+      "id": "154a571e-d93a-4922-8993-de4fb7c02415",
+      "name": "Approved?"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=chat_history",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        3472,
+        1808
+      ],
+      "id": "801ec9e4-2cad-43ea-b5f8-d1ad20ece447",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a top-tier AI strategist and viral LinkedIn storyteller. You turn cutting-edge AI updates into bold, story-driven, actionable and engaging LinkedIn posts.\n\nLanguage:\nArabic with palestinian accent\n\nAUDIENCE:\n- Non-technical professionals\n- Decision-makers and impactful people\n- curious thinkers who want to understand AI’s\n- people curious about learning about AI\n\nSTYLE:\n- Storytelling, analogy-rich, metaphor-driven\n- Relatable — explain like to a smart friend\n- Skimmable — headers, short paras, spacing, light emojis\n- Bold but truthful — no hype, just clarity\n\nTASK:\nFrom the source material, craft a post that:\n- hooks the users in a bold but truthful way\n- Explains the key idea or tool clearly\n- Provides 1+ example of a **real-world use case**\n- Shares the “why it matters” with a sharp, opinionated lens but without actually using a title for this section\n- at the end share 1 link only that is a referene to the article we're basing the content on\n\nPOST LENGTH: 1500-2000 characters\n\nHOOK ROTATION LOGIC:\nRandomly choose a different style of hook each day:\n1. “What if I told you that AI could ______?”\n2. “This AI breakthrough is about to change ______.”\n3. “Yesterday’s science fiction is today’s startup pitch.”\n4. “Let’s talk about something mind-blowing in AI...”\n5. “🧠 You’re about to understand something few people do.”\n\nRULES:\n- No buzzwords unless explained\n- Mention real tools/frameworks whenever possible\n- Do not invent facts\n- If we posted before about the same topic then try something else (check memory) "
+        }
+      },
+      "id": "4ed2414e-e8fc-4b36-8cab-a6e0c418094d",
+      "name": "Content Creator AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        3440,
+        1552
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "name": "={{$now.format('dd_MM_yyyy_hh_mm_ss') }}_{{ $json.fileName }}",
+        "driveId": {
+          "__rl": true,
+          "value": "https://drive.google.com/drive/folders/1VqgczLUSU6ixMx21ThEAOfyC50kz8cqE",
+          "mode": "url"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "root",
+          "cachedResultName": "/ (Root folder)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        3936,
+        1792
+      ],
+      "id": "f3b40d8a-e0bf-46a4-ab31-d762dbbcdf88",
+      "name": "Upload file to Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "xRNT88RKVBZ4sDGg",
+          "name": "Google Drive account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a Social Media expert, and you will manage when to post on my social media accounts.\n\nI want you to decide if now is a good time to post on Social Media (Linkedin, X, Facebook), and post. \n- Consider what works best with the algorithms\n- Consider best times that I should post\n- If you decide not to post at this moment, I want you to add a task for me in my Google Calendar with the best time you think I should post so I remember to go and post it manually\n\nOnce you're done, update me in arabic (Palestinian accent) with your decision and what you did via Telegram message\n\nnow the day and time is {{ $now }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "id": "5901dcc1-0478-492e-ab7a-83ea571935f3",
+      "name": "SMM AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        4016,
+        2144
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.facebookGraphApiTool",
+      "typeVersion": 1,
+      "position": [
+        4464,
+        2368
+      ],
+      "id": "65441094-f276-4388-ab2c-c05a5bda99d3",
+      "name": "Facebook API",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitterTool",
+      "typeVersion": 2,
+      "position": [
+        4368,
+        2368
+      ],
+      "id": "7d2b9a1a-fff9-4eed-8580-bba47b7d4699",
+      "name": "Tweet",
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        4048,
+        2368
+      ],
+      "id": "acaf9d02-8853-4608-9c81-be97f527ae06",
+      "name": "Think1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a4471d9b-4356-4d3c-a126-3d613fbaa8f7",
+              "name": "$vars.telegram_chat_id",
+              "value": "={{ $json.message.chat.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1888,
+        2256
+      ],
+      "id": "3aececb8-03eb-4c01-89ce-5ca0bc2592e0",
+      "name": "Set telegram chat ID"
+    },
+    {
+      "parameters": {
+        "chatId": "={{$vars.telegram_chat_id}}",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegramTool",
+      "typeVersion": 1.2,
+      "position": [
+        4576,
+        2368
+      ],
+      "id": "60f45e4b-1a80-43dc-b462-4ae74b2b38f3",
+      "name": "Send a text message in Telegram",
+      "webhookId": "13822edd-b44f-4640-a2e9-4a44ab63b653",
+      "credentials": {
+        "telegramApi": {
+          "id": "HbvuuLWBoYmbJ8Fr",
+          "name": "Telegram account"
+        }
+      }
     }
   ],
   "connections": {
@@ -887,24 +1063,8 @@
       "ai_languageModel": [
         [
           {
-            "node": "Post Scheduler AI Agent1",
+            "node": "SMM AI Agent",
             "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Listen for incoming events": {
-      "main": [
-        [
-          {
-            "node": "Determine content type",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Send Typing action",
-            "type": "main",
             "index": 0
           }
         ]
@@ -961,7 +1121,7 @@
       "main": [
         [
           {
-            "node": "AI Agent2",
+            "node": "On Demand Topic Research AI Agent",
             "type": "main",
             "index": 0
           }
@@ -972,7 +1132,7 @@
       "main": [
         [
           {
-            "node": "AI Agent2",
+            "node": "On Demand Topic Research AI Agent",
             "type": "main",
             "index": 0
           }
@@ -983,7 +1143,7 @@
       "ai_outputParser": [
         [
           {
-            "node": "AI Agent (Enhanced)1",
+            "node": "Content Creator AI Agent",
             "type": "ai_outputParser",
             "index": 0
           }
@@ -994,18 +1154,7 @@
       "main": [
         [
           {
-            "node": "Upload file1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent (Enhanced)1": {
-      "main": [
-        [
-          {
-            "node": "Generate an image",
+            "node": "Upload file to Drive",
             "type": "main",
             "index": 0
           }
@@ -1023,22 +1172,11 @@
         ]
       ]
     },
-    "Upload file1": {
-      "main": [
-        [
-          {
-            "node": "Convert to Email Format1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Google Gemini Chat Model2": {
       "ai_languageModel": [
         [
           {
-            "node": "AI Agent (Enhanced)1",
+            "node": "Content Creator AI Agent",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -1056,115 +1194,22 @@
         ]
       ]
     },
+    "Send content1": {
+      "main": [
+        [
+          {
+            "node": "Approved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Send Email1": {
       "main": [
         [
           {
             "node": "Send Content image1",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Post Scheduler AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent1": {
-      "main": [
-        [
-          {
-            "node": "create a \"text\" variable2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model4": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google search in SerpApi": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent2": {
-      "main": [
-        [
-          {
-            "node": "create a \"text\" variable3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model5": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent2",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google search in SerpApi1": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent2",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "create a \"text\" variable2": {
-      "main": [
-        [
-          {
-            "node": "AI Agent (Enhanced)1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "create a \"text\" variable3": {
-      "main": [
-        [
-          {
-            "node": "AI Agent (Enhanced)1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Post Scheduler AI Agent1": {
-      "main": [
-        [
-          {
-            "node": "Send Email1",
             "type": "main",
             "index": 0
           }
@@ -1175,8 +1220,256 @@
       "main": [
         [
           {
-            "node": "AI Agent1",
+            "node": "Research AI Topics AI Agent",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create a \"text\" variable2": {
+      "main": [
+        [
+          {
+            "node": "Content Creator AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Research AI Topics AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google search in SerpApi": {
+      "ai_tool": [
+        [
+          {
+            "node": "Research AI Topics AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "On Demand Topic Research AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google search in SerpApi1": {
+      "ai_tool": [
+        [
+          {
+            "node": "On Demand Topic Research AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create a \"text\" variable3": {
+      "main": [
+        [
+          {
+            "node": "Content Creator AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a post in LinkedIn": {
+      "ai_tool": [
+        [
+          {
+            "node": "SMM AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "SMM AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Listen for incoming messages": {
+      "main": [
+        [
+          {
+            "node": "Send Typing action",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Set telegram chat ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On Demand Topic Research AI Agent": {
+      "main": [
+        [
+          {
+            "node": "create a \"text\" variable3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research AI Topics AI Agent": {
+      "main": [
+        [
+          {
+            "node": "create a \"text\" variable2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "Content Creator AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approved?": {
+      "main": [
+        [
+          {
+            "node": "SMM AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Not Approved Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Content Creator AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Creator AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file to Drive": {
+      "main": [
+        [
+          {
+            "node": "Convert to Email Format1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SMM AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Facebook API": {
+      "ai_tool": [
+        [
+          {
+            "node": "SMM AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tweet": {
+      "ai_tool": [
+        [
+          {
+            "node": "SMM AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think1": {
+      "ai_tool": [
+        [
+          {
+            "node": "SMM AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set telegram chat ID": {
+      "main": [
+        [
+          {
+            "node": "Determine content type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message in Telegram": {
+      "ai_tool": [
+        [
+          {
+            "node": "SMM AI Agent",
+            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -1185,7 +1478,8 @@
   },
   "pinData": {},
   "meta": {
-    "instanceId": "REDACTED",
-    "templateCredsSetupCompleted": true
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ac0a4d5f527b0d1882d9b36b3dcfe6165f473d423d60bde412caac3d3d69cd30"
   }
 }
+
