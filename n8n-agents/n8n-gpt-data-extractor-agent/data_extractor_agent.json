@@ -1,0 +1,66 @@
+{
+  "name": "n8n GPT Data Extractor Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "subject": "Data extraction from emails",
+        "message": "This is a placeholder workflow for extracting structured data from emails using GPT and storing results in a database."
+      },
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "id": "start-node"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4",
+        "prompt": "Extract structured data from the following email content and return as JSON"
+      },
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [460, 300],
+      "id": "gpt-extractor"
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "table": "extracted_data"
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [680, 300],
+      "id": "database-insert"
+    }
+  ],
+  "connections": {
+    "start-node": {
+      "main": [
+        [
+          {
+            "node": "gpt-extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gpt-extractor": {
+      "main": [
+        [
+          {
+            "node": "database-insert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-25T18:35:00.000Z",
+  "updatedAt": "2025-08-25T18:35:00.000Z",
+  "settings": {},
+  "staticData": null,
+  "tags": ["email-processing", "gpt", "data-extraction"],
+  "triggerCount": 0,
+  "versionId": "1.0.0"
+}
